@@ -1,23 +1,26 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  color:'#fff';
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #1E1F23;;
     --foreground: #ededed;
+    color:'#fff';
   }
 }
 
 html,
 body {
+  color:'#fff';
   max-width: 100vw;
   overflow-x: hidden;
 }
 
 body {
-  color: var(--foreground);
+  color: '#fff';
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -29,14 +32,6 @@ body {
   padding: 0;
   margin: 0;
 }
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+.border-button {
+  border-bottom: 2px solid  #00FF8C;
 }
