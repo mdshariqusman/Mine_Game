@@ -18,7 +18,7 @@ const CustomSlider = styled(Slider)({
   },
   "& .MuiSlider-track": {
     border: "none",
-    backgroundColor: "linear-gradient(90deg, #00FF8C, #A3C72E)",
+    background: "linear-gradient(90deg,#24ee89,#9fe871)",
   },
   "& .MuiSlider-rail": {
     opacity: 1,
@@ -28,34 +28,34 @@ const CustomSlider = styled(Slider)({
 
 const SliderComponent = () => {
   const dispatch = useDispatch();
-  const sliderValue = useSelector((state)=> state.data.sliderValue);
-  const gameStarted = useSelector((state)=> state.data.gameStart);
+  const sliderValue = useSelector((state) => state.data.sliderValue);
+  const gameStarted = useSelector((state) => state.data.gameStart);
   const handleChange = (event, newValue) => {
-      dispatch(updateSliderValue(newValue))
+    dispatch(updateSliderValue(newValue))
   };
 
   return (
     <Box
       sx={{
+        padding: '4px',
         width: '100%',
-        padding: 2,
         backgroundColor: "#2a2a2a",
-        borderRadius: 3,
+        borderRadius: 2,
         color: "white",
-        marginBottom:'20px'
+        marginBottom: '20px'
       }}
     >
       <Box display="flex" alignItems="center">
         <Typography
           variant="body2"
-          sx={{ width: 30, textAlign: "center", marginRight: "5px" }}
+          sx={{ width: 30, textAlign: "center", marginRight: "5px", color: 'white', fontWeight: 600 }}
         >
           {sliderValue}
         </Typography>
         <CustomSlider value={sliderValue} disabled={gameStarted} onChange={handleChange} min={1} max={24} />
         <Typography
           variant="body2"
-          sx={{ width: 30, textAlign: "center", marginLeft: "8px" }}
+          sx={{ width: 30, textAlign: "center", marginLeft: "8px", color: 'rgb(179 190 193)', fontWeight: 600 }}
         >
           24
         </Typography>

@@ -1,9 +1,10 @@
-import React, { useState,useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { Box, Grid2, } from "@mui/material"
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-import { updateBetButtonValue, updateSelectedTiles, updatGamerOver,emptySelectedTiles } from "./app/dataSlice";
+import { updateBetButtonValue, updateSelectedTiles, updatGamerOver, emptySelectedTiles,updateMessage,updateModalValue } from "./app/dataSlice";
+import CustomModal from "../modal";
 
 const GameGrid = styled(Grid2)(({ theme }) => ({
     height: '80vh',
@@ -39,30 +40,34 @@ const SquareBox = styled(Box)(({ theme }) => ({
 function SquareContainer({ mine }) {
     const isClicked = useSelector((state) => state.data.gameStart);
     const isGameOver = useSelector((state) => state.data.gameOver);
+    const isCashout = useSelector((state) => state.data.cashOut);
     const data = useSelector((state) => state.data);
     const [icon, setIcon] = useState('')
     const dispatch = useDispatch();
 
-    useEffect(()=> {
-        if(isGameOver && !icon) {
+    useEffect(() => {
+        if (isGameOver && !icon) {
             dispatch(emptySelectedTiles());
             dispatch(updateBetButtonValue(false))
             dispatch(updatGamerOver(false));
             if (mine) {
-                setIcon(<Image style={{opacity:'0.2'}} src={'/assets/bomb_icon.webp'} height={75} width={75} />)
+                setIcon(<Image style={{ opacity: '0.3' }} src={'/assets/bomb_icon.webp'} height={75} width={75} />)
             }
             else {
-                setIcon(<Image style={{opacity:'0.2'}} src={'/assets/dimond_icon.webp'} height={75} width={75} />)
+                setIcon(<Image style={{ opacity: '0.3' }} src={'/assets/dimond_icon.webp'} height={75} width={75} />)
             }
         }
-        if(isClicked && !isGameOver) setIcon('');
-    },[isGameOver,isClicked])
+        if (isClicked && !isGameOver) setIcon('');
+    }, [isGameOver, isClicked, isCashout])
 
     const handleSetImage = () => {
         if (!isClicked) return;
         if (mine) {
             setIcon(<Image src={'/assets/bomb_icon.webp'} height={75} width={75} />)
             dispatch(updatGamerOver(true));
+            dispatch(updateModalValue(true))
+            dispatch(updateMessage('Game Over'))
+
         }
         else {
             setIcon(<Image src={'/assets/dimond_icon.webp'} height={75} width={75} />)
@@ -82,6 +87,7 @@ function getRandomNumber(min, max) {
 
 export default function MineGameComponent(props) {
     const sliderValue = useSelector((state) => state.data.sliderValue);
+    const showModal = useSelector((state) => state.data.modalValue);
     let randomNum = [];
     const array = new Array(25).fill(0).map((item, index) => index + 1);
 
@@ -100,6 +106,7 @@ export default function MineGameComponent(props) {
                 return <SquareContainer mine={randomNum.includes(item)} key={index} />
             })}
         </GridLayout>
+        {showModal && <CustomModal />}
     </GameGrid>
 
 }

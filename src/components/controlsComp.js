@@ -9,12 +9,13 @@ const ControlsGrid = styled(Grid2)(({ theme }) => ({
 }));
 const CustomButton = styled(Button)(({ theme,selected}) => ({
     width:'50%',
-    color:'white',
+    color: selected ? 'white' :'rgb(179 190 193)',
     borderRadius:'0px',
     overflow: 'hidden',
     height:'50px',
     borderBottom: selected ? '2px solid  #00FF8C' :'',
-     textTransform:'capitalize'
+     textTransform:'capitalize',
+     fontWeight:'bold',
 }));
 
 
