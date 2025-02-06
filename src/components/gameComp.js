@@ -3,8 +3,9 @@ import { Box, Grid2, } from "@mui/material"
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-import { updateBetButtonValue, updateSelectedTiles, updatGamerOver, emptySelectedTiles,updateMessage,updateModalValue } from "./app/dataSlice";
+import { updateBetButtonValue, updateSelectedTiles, updatGamerOver, emptySelectedTiles, updateMessage, updateModalValue } from "./app/dataSlice";
 import CustomModal from "../modal";
+import { useMemo } from "react";
 
 const GameGrid = styled(Grid2)(({ theme }) => ({
     height: '80vh',
@@ -35,14 +36,15 @@ const SquareBox = styled(Box)(({ theme }) => ({
         backgroundColor: 'rgb(83 94 95)',
     },
     cursor: 'pointer',
-    overflow:'hidden'
+    overflow: 'hidden'
 }));
 
 function SquareContainer({ mine }) {
     const isClicked = useSelector((state) => state.data.gameStart);
     const isGameOver = useSelector((state) => state.data.gameOver);
     const isCashout = useSelector((state) => state.data.cashOut);
-    const data = useSelector((state) => state.data);
+    const selectedTiles = useSelector((state) => state.data.selectedTiles);
+    const sliderValue = useSelector((state) => state.data.sliderValue);
     const [icon, setIcon] = useState('')
     const dispatch = useDispatch();
 
@@ -61,6 +63,16 @@ function SquareContainer({ mine }) {
         if (isClicked && !isGameOver) setIcon('');
     }, [isGameOver, isClicked, isCashout])
 
+    useEffect(() => {
+        if (selectedTiles + sliderValue === 25) {
+            dispatch(updatGamerOver(true));
+            dispatch(updateModalValue(true))
+            dispatch(updateMessage('You Won'))
+            dispatch(emptySelectedTiles());
+            dispatch(updateBetButtonValue(!isClicked))
+        }
+    }, [selectedTiles])
+
     const handleSetImage = () => {
         if (!isClicked) return;
         if (mine) {
@@ -71,7 +83,7 @@ function SquareContainer({ mine }) {
 
         }
         else {
-            setIcon(<Image src={'/assets/dimond_icon.webp'} height={80} width={80} style={{backgroundColor:'#7d40cf'}}/>)
+            setIcon(<Image src={'/assets/dimond_icon.webp'} height={80} width={80} style={{ backgroundColor: '#7d40cf' }} />)
             dispatch(updateSelectedTiles());
         }
     }
@@ -89,15 +101,19 @@ function getRandomNumber(min, max) {
 export default function MineGameComponent(props) {
     const sliderValue = useSelector((state) => state.data.sliderValue);
     const showModal = useSelector((state) => state.data.modalValue);
-    let randomNum = [];
     const array = new Array(25).fill(0).map((item, index) => index + 1);
-
-    while (randomNum.length < sliderValue) {
-        let tempNum = getRandomNumber(1, 25);
-        if (!randomNum.includes(tempNum)) {
-            randomNum.push(tempNum);
+    const isGameOver = useSelector((state) => state.data.gameOver);
+    const randomNum = useMemo(() => {
+        let tempNumbers = [];
+        while (tempNumbers.length < sliderValue) {
+            let tempNum = getRandomNumber(1, 25);
+            if (!tempNumbers.includes(tempNum)) {
+                tempNumbers.push(tempNum);
+            }
         }
-    }
+        return tempNumbers;
+    }, [isGameOver,sliderValue]);
+    
     return <GameGrid item size={8}>
         <Box sx={{ position: 'absolute', top: 47, right: 200 }}>
             <Image src={'/assets/card_image.webp'} width={150} height={50} />
