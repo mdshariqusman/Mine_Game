@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { updateBetButtonValue, updateSelectedTiles, updatGamerOver, emptySelectedTiles, updateMessage, updateModalValue } from "./app/dataSlice";
 import CustomModal from "../modal";
-import { useMemo } from "react";
 
 const GameGrid = styled(Grid2)(({ theme }) => ({
     height: '80vh',
@@ -103,17 +102,20 @@ export default function MineGameComponent(props) {
     const showModal = useSelector((state) => state.data.modalValue);
     const array = new Array(25).fill(0).map((item, index) => index + 1);
     const isGameOver = useSelector((state) => state.data.gameOver);
-    const randomNum = useMemo(() => {
-        let tempNumbers = [];
-        while (tempNumbers.length < sliderValue) {
+    const isClicked = useSelector((state) => state.data.gameStart);
+    const [randomNum, setRandomNum] = useState([]);
+    
+    useEffect(() => {
+        let newMines = [];
+        while (newMines.length < sliderValue) {
             let tempNum = getRandomNumber(1, 25);
-            if (!tempNumbers.includes(tempNum)) {
-                tempNumbers.push(tempNum);
+            if (!newMines.includes(tempNum)) {
+                newMines.push(tempNum);
             }
         }
-        return tempNumbers;
-    }, [isGameOver,sliderValue]);
-    
+        setRandomNum(newMines);
+    }, [sliderValue,isClicked]);
+
     return <GameGrid item size={8}>
         <Box sx={{ position: 'absolute', top: 47, right: 200 }}>
             <Image src={'/assets/card_image.webp'} width={150} height={50} />
