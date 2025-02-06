@@ -35,6 +35,7 @@ const SquareBox = styled(Box)(({ theme }) => ({
         backgroundColor: 'rgb(83 94 95)',
     },
     cursor: 'pointer',
+    overflow:'hidden'
 }));
 
 function SquareContainer({ mine }) {
@@ -51,10 +52,10 @@ function SquareContainer({ mine }) {
             dispatch(updateBetButtonValue(false))
             dispatch(updatGamerOver(false));
             if (mine) {
-                setIcon(<Image style={{ opacity: '0.3' }} src={'/assets/bomb_icon.webp'} height={75} width={75} />)
+                setIcon(<Image style={{ opacity: '0.3' }} src={'/assets/bomb_icon.webp'} height={80} width={80} />)
             }
             else {
-                setIcon(<Image style={{ opacity: '0.3' }} src={'/assets/dimond_icon.webp'} height={75} width={75} />)
+                setIcon(<Image style={{ opacity: '0.3' }} src={'/assets/dimond_icon.webp'} height={80} width={80} />)
             }
         }
         if (isClicked && !isGameOver) setIcon('');
@@ -63,14 +64,14 @@ function SquareContainer({ mine }) {
     const handleSetImage = () => {
         if (!isClicked) return;
         if (mine) {
-            setIcon(<Image src={'/assets/bomb_icon.webp'} height={75} width={75} />)
+            setIcon(<Image src={'/assets/bomb_icon.webp'} height={80} width={80} />)
             dispatch(updatGamerOver(true));
             dispatch(updateModalValue(true))
             dispatch(updateMessage('Game Over'))
 
         }
         else {
-            setIcon(<Image src={'/assets/dimond_icon.webp'} height={75} width={75} />)
+            setIcon(<Image src={'/assets/dimond_icon.webp'} height={80} width={80} style={{backgroundColor:'#7d40cf'}}/>)
             dispatch(updateSelectedTiles());
         }
     }

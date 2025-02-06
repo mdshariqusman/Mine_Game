@@ -39,10 +39,11 @@ const SliderComponent = () => {
       sx={{
         padding: '4px',
         width: '100%',
-        backgroundColor: "#2a2a2a",
+        backgroundColor: "rgb(41 45 46)",
         borderRadius: 2,
         color: "white",
-        marginBottom: '20px'
+        marginBottom: '20px',
+        opacity: gameStarted ? 0.5 : 1,
       }}
     >
       <Box display="flex" alignItems="center">

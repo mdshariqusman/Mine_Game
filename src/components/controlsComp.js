@@ -6,6 +6,7 @@ import FormComponent from "./form";
 
 const ControlsGrid = styled(Grid2)(({ theme }) => ({
     height: '80vh',
+    borderRight:'1px solid #e4eaf019',
 }));
 const CustomButton = styled(Button)(({ theme,selected}) => ({
     width:'50%',
@@ -13,7 +14,7 @@ const CustomButton = styled(Button)(({ theme,selected}) => ({
     borderRadius:'0px',
     overflow: 'hidden',
     height:'50px',
-    borderBottom: selected ? '2px solid  #00FF8C' :'',
+    borderBottom: selected ? '2px solid  #00FF8C' :'1px solid #e4eaf019',
      textTransform:'capitalize',
      fontWeight:'bold',
 }));
